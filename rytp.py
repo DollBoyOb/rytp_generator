@@ -43,10 +43,11 @@ for i in range(len(sources_dirty)):
     if Path(f"/media/{sources_dirty[i]}").suffix == ".mp4":
         sources.append(sources_dirty[i])
 print("\nСурсы, использующий генератор:",sources,"\n")
+if len(sources)<=1:
+    print("\nВнимание! В вашей папке сурсов меньше нормы (2 сурса)\n")
 print("Идёт генерирование пупа... Это может занять более 10 минут")
 all_clips = [intro]
 for x in range(clips_range):
-    
     try:
         rand_clip = random.choice(sources)
         clip_for_rytp = VideoFileClip(f"media/{rand_clip}")
