@@ -37,14 +37,12 @@ def sas(clip):
     reverse = clip.fx(vfx.mirror_x)
     saas_clip = concatenate_videoclips([clip, reverse])
     return saas_clip
-
 sources_dirty = os.listdir(path="media")
 sources = []
 for i in range(len(sources_dirty)):
     if Path(f"/media/{sources_dirty[i]}").suffix == ".mp4":
         sources.append(sources_dirty[i])
-print("Сурсы, использующий генератор:",sources,"\n")
-
+print("\nСурсы, использующий генератор:",sources,"\n")
 print("Идёт генерирование пупа... Это может занять более 10 минут")
 all_clips = [intro]
 for x in range(clips_range):
