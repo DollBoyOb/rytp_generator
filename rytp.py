@@ -34,7 +34,7 @@ maximum = float(input("Максимальная продолжительност
 random_shit = [i/10 for i in range(3, 20, 1)]
 effects = ['.fx(vfx.speedx, random.choice(random_shit))', '.fx(vfx.mirror_x)', '.fx(vfx.invert_colors)','.fx(vfx.time_mirror)', '.set_audio(second_clip.audio)', '.fx(vfx.invert_colors)']
 def sas(clip):
-    reverse = clip.fx(vfx.mirror_x)
+    reverse = clip.fx(vfx.time_mirror)
     saas_clip = concatenate_videoclips([clip, reverse])
     return saas_clip
 sources_dirty = os.listdir(path="media")
@@ -46,6 +46,7 @@ print("\nСурсы, использующий генератор:",sources,"\n")
 print("Идёт генерирование пупа... Это может занять более 10 минут")
 all_clips = [intro]
 for x in range(clips_range):
+    
     try:
         rand_clip = random.choice(sources)
         clip_for_rytp = VideoFileClip(f"media/{rand_clip}")
@@ -57,6 +58,7 @@ for x in range(clips_range):
         sources.remove(rand_clip)
     # тут добавляются эффекты
     for i in range(random.randint(1,3)):
+      sas_counter = random.randint(1, 30)
       try:
           rand_second_clip = random.choice(sources)
           second_clip = VideoFileClip(f"media/{rand_second_clip}")
@@ -69,6 +71,8 @@ for x in range(clips_range):
           second_clip = second_clip.subclip(unigreet, unigreet+random.uniform(minimum,maximum*4))
           effect = random.choice(effects)
           clip_rytp = eval(f'clip_for_rytp{effect}')
+          if sas_counter == 10:
+              clip_rytp = sas(clip_rytp)
       except OSError:
           print("Найден нечитаемый сурс:", rand_second_clip)
           sources.remove(rand_second_clip)
