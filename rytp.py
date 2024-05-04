@@ -31,7 +31,7 @@ clips_range = int(input("Количество вставок в пупе (25 в�
 minimum = float(input("Минимальная продолжительность одной вставки в пупе: "))
 print("ВНИМАНИЕ! Если вы напишете значение меньше 1, то rytp_generator выдаст ошибку")
 maximum = float(input("Максимальная продолжительность одной вставки в пупе: "))
-random_shit = [i/10 for i in range(3, 20, 1)]
+random_shit = [i/10 for i in range(5, 25, 1)]
 effects = ['.fx(vfx.speedx, random.choice(random_shit))', '.fx(vfx.mirror_x)', '.fx(vfx.invert_colors)','.fx(vfx.time_mirror)', '.set_audio(second_clip.audio)', '.fx(vfx.invert_colors)']
 def sas(clip):
     reverse = clip.fx(vfx.time_mirror)
@@ -70,9 +70,10 @@ for x in range(clips_range):
           unigreet = random_clip_of_second_clip-random.uniform(minimum,maximum*6)-1
           second_clip = second_clip.subclip(unigreet, unigreet+random.uniform(minimum,maximum*4))
           effect = random.choice(effects)
-          clip_rytp = eval(f'clip_for_rytp{effect}')
           if sas_counter == 10:
               clip_rytp = sas(clip_rytp)
+              print("Выполнен СААС")
+          clip_rytp = eval(f'clip_for_rytp{effect}')
       except OSError:
           print("Найден нечитаемый сурс:", rand_second_clip)
           sources.remove(rand_second_clip)
