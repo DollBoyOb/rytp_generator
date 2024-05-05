@@ -29,7 +29,6 @@ print("""
 """)
 clips_range = int(input("Количество вставок в пупе (25 вставок = +-одна минута): "))
 minimum = float(input("Минимальная продолжительность одной вставки в пупе: "))
-print("ВНИМАНИЕ! Если вы напишете значение меньше 1, то rytp_generator выдаст ошибку")
 maximum = float(input("Максимальная продолжительность одной вставки в пупе: "))
 random_shit = [i/10 for i in range(5, 25, 1)]
 effects = ['.fx(vfx.speedx, random.choice(random_shit))', '.fx(vfx.mirror_x)', '.fx(vfx.invert_colors)','.fx(vfx.time_mirror)', '.set_audio(second_clip.audio)', '.fx(vfx.invert_colors)']
