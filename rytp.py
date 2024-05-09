@@ -68,12 +68,15 @@ for x in range(clips_range):
           if random_clip_of_second_clip>=second_clip_duration:
               random_clip_of_second_clip-=(maximum*4)
               random_clip_of_second_clip=abs(random_clip_of_second_clip)
-          unigreet = random_clip_of_second_clip-random.uniform(minimum,maximum*6)-1
+          unigreet = abs(random_clip_of_second_clip-random.uniform(minimum,maximum*6)-1)
           second_clip = second_clip.subclip(unigreet, unigreet+random.uniform(minimum,maximum*4))
           effect = random.choice(effects)
           if sas_counter == 10:
-              clip_rytp = sas(clip_rytp)
-              print("Выполнен СААС")
+              try:
+                  clip_rytp = sas(clip_rytp)
+                  print("Выполнен СААС")
+              except IndexError:
+                  print("Не выполнен СААС")
           clip_rytp = eval(f'clip_for_rytp{effect}')
       except OSError:
           print("Найден нечитаемый сурс:", rand_second_clip)
