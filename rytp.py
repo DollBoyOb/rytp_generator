@@ -32,6 +32,7 @@ minimum = float(input("Минимальная продолжительность
 maximum = float(input("Максимальная продолжительность одной вставки в пупе: "))
 random_shit = [i/10 for i in range(5, 25, 1)]
 effects = ['.fx(vfx.speedx, random.choice(random_shit))', '.fx(vfx.mirror_x)', '.fx(vfx.invert_colors)','.fx(vfx.time_mirror)', '.set_audio(second_clip.audio)', '.fx(vfx.invert_colors)']
+# САС эффект
 def sas(clip):
     reverse = clip.fx(vfx.time_mirror)
     saas_clip = concatenate_videoclips([clip, reverse])
@@ -69,7 +70,7 @@ for x in range(clips_range):
               random_clip_of_second_clip-=(maximum*4)
               random_clip_of_second_clip=abs(random_clip_of_second_clip)
           unigreet = abs(random_clip_of_second_clip-random.uniform(minimum,maximum*6)-1)
-          second_clip = second_clip.subclip(unigreet, unigreet+random.uniform(minimum,maximum*4))
+          second_clip = second_clip.subclip(unigreet, unigreet+random.uniform(minimum,maximum*2))
           effect = random.choice(effects)
           if sas_counter == 10:
               try:
