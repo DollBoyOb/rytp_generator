@@ -37,6 +37,15 @@ def sas(clip):
     reverse = clip.fx(vfx.time_mirror)
     saas_clip = concatenate_videoclips([clip, reverse])
     return saas_clip
+def pitchclip(clip, duration):
+  random_timestamp = random.uniform(0, duration/2)
+  clip = clip.subclip(random_timestamp, random_timestamp+(duration/6))
+  array_pitch = []
+  for i in range(5):
+    clip_part = clip.fx(vfx.speedx, 1+i/2)
+    array_pitch.append(clip_part)
+  pitch_final = concatenate_videoclips(array_pitch)
+  return pitch_final
 support_suffixes = [".mp4",".avi",".3gp",".mov"]
 sources_dirty = os.listdir(path="media")
 sources = []
@@ -70,7 +79,10 @@ for x in range(clips_range):
           second_clip = second_clip.subclip(random_clip_of_second_clip, random_clip_of_second_clip+random.uniform(minimum,maximum))
           effect = random.choice(effects)
           clip_rytp = eval(f'clip_for_rytp{effect}')
-          if sas_counter == 10:
+          if sas_counter <= 5:
+              clip_rytp = pitchclip(clip_rytp, clip_rytp.duration)
+              print("Выполнен питч")
+          if sas_counter <= 10:
               try:
                   clip_rytp = sas(clip_rytp)
                   print("Выполнен СААС")
