@@ -53,8 +53,8 @@ for x in range(clips_range):
         rand_clip = random.choice(sources)
         clip_for_rytp = VideoFileClip(f"media/{rand_clip}")
         clip_duration = clip_for_rytp.duration
-        random_clip_of_clip = random.randint(1, abs(int(clip_duration-(maximum*4))))
-        clip_for_rytp = clip_for_rytp.subclip(random_clip_of_clip-random.uniform(minimum,maximum*1.5), random_clip_of_clip+random.uniform(minimum,maximum))
+        random_clip_of_clip = random.randint(0, abs(int(clip_duration-maximum)))
+        clip_for_rytp = clip_for_rytp.subclip(random_clip_of_clip, random_clip_of_clip+random.uniform(minimum, maximum))
     except OSError:
         print("Найден нечитаемый сурс:", rand_clip)
         sources.remove(rand_clip)
@@ -65,13 +65,9 @@ for x in range(clips_range):
           rand_second_clip = random.choice(sources)
           second_clip = VideoFileClip(f"media/{rand_second_clip}")
           second_clip_duration = second_clip.duration
-          random_clip_of_second_clip = random.randint(1, abs(int(second_clip_duration-(maximum*4.5)+3))+3) # эта хуёвина выдавала постоянно empty randrange, поэтому я прибавил 3 к этой хуйне (я сам не понимаю, что тут происходит)
-          if random_clip_of_second_clip>=second_clip_duration:
-              random_clip_of_second_clip-=(maximum*4)
-              random_clip_of_second_clip=abs(random_clip_of_second_clip)
+          random_clip_of_second_clip = random.randint(0, abs(second_clip_duration-maximum)) # эта хуёвина выдавала постоянно empty randrange, поэтому я прибавил 3 к этой хуйне (я сам не понимаю, что тут происходит)
           unigreet = abs(random_clip_of_second_clip-random.uniform(minimum,maximum*6)-1)
-          if unigreet > second_clip.duration: unigreet-=(second_clip_duration/2)
-          second_clip = second_clip.subclip(unigreet, unigreet+random.uniform(minimum,maximum*2))
+          second_clip = second_clip.subclip(random_clip_of_second_clip, random_clip_of_second_clip+random.uniform(minimum,maximum))
           effect = random.choice(effects)
           clip_rytp = eval(f'clip_for_rytp{effect}')
           if sas_counter == 10:
