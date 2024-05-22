@@ -46,6 +46,15 @@ def pitchclip(clip, duration):
     array_pitch.append(clip_part)
   pitch_final = concatenate_videoclips(array_pitch)
   return pitch_final
+def soup_random(clip, duration):
+    array_pitch = []
+    print(duration)
+    for x in range(10):
+        random_timestamp = random.uniform(0.5, duration)
+        clip_p = clip.subclip(random_timestamp-0.5, random_timestamp)
+        clip_part = clip_p.fx(vfx.speedx, 3.5+random.uniform(0.2, 2))array_pitch.append(clip_part)
+        pitch_final = concatenate_videoclips(array_pitch)
+    return pitch_final
 support_suffixes = [".mp4",".avi",".3gp",".mov"]
 sources_dirty = os.listdir(path="media")
 sources = []
@@ -69,7 +78,7 @@ for x in range(clips_range):
         sources.remove(rand_clip)
     # тут добавляются эффекты
     for i in range(random.randint(1,3)):
-      sas_counter = random.randint(1, 30)
+      sas_counter = random.randint(1, 100)
       try:
           rand_second_clip = random.choice(sources)
           second_clip = VideoFileClip(f"media/{rand_second_clip}")
@@ -80,9 +89,11 @@ for x in range(clips_range):
           effect = random.choice(effects)
           clip_rytp = eval(f'clip_for_rytp{effect}')
           if sas_counter <= 5:
+              clip_rytp = soup_random(clip_rytp, clip_rytp.duration)
+          if sas_counter <= 15:
               clip_rytp = pitchclip(clip_rytp, clip_rytp.duration)
               print("Выполнен питч")
-          if sas_counter <= 10:
+          if sas_counter <= 25:
               try:
                   clip_rytp = sas(clip_rytp)
                   print("Выполнен СААС")
