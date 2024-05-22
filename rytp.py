@@ -52,7 +52,8 @@ def soup_random(clip, duration):
     for x in range(10):
         random_timestamp = random.uniform(0.5, duration)
         clip_p = clip.subclip(random_timestamp-0.5, random_timestamp)
-        clip_part = clip_p.fx(vfx.speedx, 3.5+random.uniform(0.2, 2))array_pitch.append(clip_part)
+        clip_part = clip_p.fx(vfx.speedx, 3.5+random.uniform(0.2, 2))
+        array_pitch.append(clip_part)
         pitch_final = concatenate_videoclips(array_pitch)
     return pitch_final
 support_suffixes = [".mp4",".avi",".3gp",".mov"]
