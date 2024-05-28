@@ -46,16 +46,20 @@ def pitchclip(clip, duration):
     array_pitch.append(clip_part)
   pitch_final = concatenate_videoclips(array_pitch)
   return pitch_final
-# def soup_random(clip, duration):
-#     array_pitch = []
-#     print(duration)
-#     for x in range(10):
-#         random_timestamp = random.uniform(0.5, duration)
-#         clip_p = clip.subclip(random_timestamp-0.5, random_timestamp)
-#         clip_part = clip_p.fx(vfx.speedx, 3.5+random.uniform(0.2, 2))
-#         array_pitch.append(clip_part)
-#         pitch_final = concatenate_videoclips(array_pitch)
-#     return pitch_final хуйня не работает
+def soup_random(clip, duration):
+    array_pitch = []
+    for x in range(10):
+        random_timestamp = random.uniform(duration/15, duration)
+        if duration<0.5: part_duration = duration/10
+        else: part_duration = 0.5
+        if random_timestamp>duration:
+            random_timestamp-=(duration/3)
+            print("Umpa-Lumpa")
+        clip_p = clip.subclip(random_timestamp-part_duration-0.02, random_timestamp)
+        clip_part = clip_p.fx(vfx.speedx, 3.5+random.uniform(0.2, 2))
+        array_pitch.append(clip_part)
+    pitch_final = concatenate_videoclips(array_pitch)
+    return pitch_final
 support_suffixes = [".mp4",".avi",".3gp",".mov"]
 sources_dirty = os.listdir(path="media")
 sources = []
@@ -89,12 +93,16 @@ for x in range(clips_range):
           second_clip = second_clip.subclip(random_clip_of_second_clip, random_clip_of_second_clip+random.uniform(minimum,maximum))
           effect = random.choice(effects)
           clip_rytp = eval(f'clip_for_rytp{effect}')
-          # if sas_counter <= 5:
-          #     clip_rytp = soup_random(clip_rytp, clip_rytp.duration)
-          if sas_counter <= 15:
+          if sas_counter >= 75:
+              try:
+                  clip_rytp = soup_random(clip_rytp, clip_rytp.duration)
+                  print("Выполнен рандом")
+              except:
+                  print("Не выполнен рандом")
+          if sas_counter <= 13:
               clip_rytp = pitchclip(clip_rytp, clip_rytp.duration)
               print("Выполнен питч")
-          if sas_counter <= 25:
+          if sas_counter <= 18:
               try:
                   clip_rytp = sas(clip_rytp)
                   print("Выполнен СААС")
