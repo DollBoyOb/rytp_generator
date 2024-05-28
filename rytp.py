@@ -100,13 +100,16 @@ for x in range(clips_range):
               except:
                   print("Не выполнен рандом")
           if sas_counter <= 13:
-              clip_rytp = pitchclip(clip_rytp, clip_rytp.duration)
-              print("Выполнен питч")
+              try:
+                  clip_rytp = pitchclip(clip_rytp, clip_rytp.duration)
+                  print("Выполнен питч")
+              except:
+                  print("Не выполнен питч")
           if sas_counter <= 18:
               try:
                   clip_rytp = sas(clip_rytp)
                   print("Выполнен СААС")
-              except IndexError:
+              except:
                   print("Не выполнен СААС")
       except OSError:
           print("Найден нечитаемый сурс:", rand_second_clip)
