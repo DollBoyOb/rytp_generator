@@ -83,7 +83,6 @@ for x in range(clips_range):
         sources.remove(rand_clip)
     # тут добавляются эффекты
     for i in range(random.randint(1,3)):
-      sas_counter = random.randint(1, 100)
       try:
           rand_second_clip = random.choice(sources)
           second_clip = VideoFileClip(f"media/{rand_second_clip}")
@@ -93,24 +92,16 @@ for x in range(clips_range):
           second_clip = second_clip.subclip(random_clip_of_second_clip, random_clip_of_second_clip+random.uniform(minimum,maximum))
           effect = random.choice(effects)
           clip_rytp = eval(f'clip_for_rytp{effect}')
-          if sas_counter >= 75:
-              try:
-                  clip_rytp = soup_random(clip_rytp, clip_rytp.duration)
-                  print("Выполнен рандом")
-              except:
-                  print("Не выполнен рандом")
-          if sas_counter <= 13:
-              try:
-                  clip_rytp = pitchclip(clip_rytp, clip_rytp.duration)
-                  print("Выполнен питч")
-              except:
-                  print("Не выполнен питч")
-          if sas_counter <= 18:
-              try:
-                  clip_rytp = sas(clip_rytp)
-                  print("Выполнен СААС")
-              except:
-                  print("Не выполнен СААС")
+          
+          percentage_array = ["САС"] * 35 + ["РАНДОМ"] * 35 + ["ПИТЧ"] * 20 + ["НИЧЕГО"] * 10
+          choice = random.choice(percentage_array)
+          try:
+            if choice == "РАНДОМ": clip_rytp = soup_random(clip_rytp, clip_rytp.duration)
+            if choice == "ПИТЧ": clip_rytp = pitchclip(clip_rytp, clip_rytp.duration)
+            if choice == "САС": clip_rytp = sas(clip_rytp)
+            if choice == "НИЧЕГО": pass
+          except:
+            pass
       except OSError:
           print("Найден нечитаемый сурс:", rand_second_clip)
           sources.remove(rand_second_clip)
