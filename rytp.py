@@ -32,6 +32,7 @@ minimum = float(input("Минимальная продолжительность
 maximum = float(input("Максимальная продолжительность одной вставки в пупе: "))
 random_shit = [i/10 for i in range(5, 25, 1)]
 effects = ['.fx(vfx.speedx, random.choice(random_shit))', '.fx(vfx.mirror_x)', '.fx(vfx.invert_colors)','.fx(vfx.time_mirror)', '.set_audio(second_clip.audio)', '.fx(vfx.invert_colors)']
+percentage_array = ["САС"] * 35 + ["РАНДОМ"] * 35 + ["ПИТЧ"] * 20 + ["НИЧЕГО"] * 10
 # САС эффект
 def sas(clip):
     reverse = clip.fx(vfx.time_mirror)
@@ -93,7 +94,6 @@ for x in range(clips_range):
           effect = random.choice(effects)
           clip_rytp = eval(f'clip_for_rytp{effect}')
           
-          percentage_array = ["САС"] * 35 + ["РАНДОМ"] * 35 + ["ПИТЧ"] * 20 + ["НИЧЕГО"] * 10
           choice = random.choice(percentage_array)
           try:
             if choice == "РАНДОМ": clip_rytp = soup_random(clip_rytp, clip_rytp.duration)
