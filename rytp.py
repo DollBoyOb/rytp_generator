@@ -89,7 +89,6 @@ for x in range(clips_range):
           second_clip = VideoFileClip(f"media/{rand_second_clip}")
           second_clip_duration = second_clip.duration
           random_clip_of_second_clip = random.randint(0, abs(second_clip_duration-maximum)) # эта хуёвина выдавала постоянно empty randrange, поэтому я прибавил 3 к этой хуйне (я сам не понимаю, что тут происходит)
-          unigreet = abs(random_clip_of_second_clip-random.uniform(minimum,maximum*6)-1)
           second_clip = second_clip.subclip(random_clip_of_second_clip, random_clip_of_second_clip+random.uniform(minimum,maximum))
           effect = random.choice(effects)
           clip_rytp = eval(f'clip_for_rytp{effect}')
