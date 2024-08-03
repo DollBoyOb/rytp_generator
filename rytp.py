@@ -53,9 +53,6 @@ def soup_random(clip, duration):
         random_timestamp = random.uniform(duration/15, duration)
         if duration<0.5: part_duration = duration/10
         else: part_duration = 0.5
-        if random_timestamp>duration:
-            random_timestamp-=(duration/3)
-            print("Umpa-Lumpa")
         clip_p = clip.subclip(random_timestamp-part_duration-0.02, random_timestamp)
         clip_part = clip_p.fx(vfx.speedx, 3.5+random.uniform(0.2, 2))
         array_pitch.append(clip_part)
