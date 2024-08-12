@@ -31,13 +31,16 @@ clips_range = int(input("Количество вставок в пупе (25 в�
 minimum = float(input("Минимальная продолжительность одной вставки в пупе: "))
 maximum = float(input("Максимальная продолжительность одной вставки в пупе: "))
 random_shit = [i/10 for i in range(5, 25, 1)]
-effects = ['.fx(vfx.speedx, random.choice(random_shit))', '.fx(vfx.mirror_x)', '.fx(vfx.invert_colors)','.fx(vfx.time_mirror)', '.set_audio(second_clip.audio)', '.fx(vfx.invert_colors)']
+effects = ['.fx(vfx.speedx, random.choice(random_shit))', '.fx(vfx.mirror_x)', '.fx(vfx.time_mirror)', '.set_audio(second_clip.audio)', '.fx(vfx.invert_colors)']
 percentage_array = ["САС"] * 35 + ["РАНДОМ"] * 35 + ["ПИТЧ"] * 20 + ["НИЧЕГО"] * 10
+
 # САС эффект
 def sas(clip):
     reverse = clip.fx(vfx.time_mirror)
     saas_clip = concatenate_videoclips([clip, reverse])
     return saas_clip
+
+# Питч эффект - с каждой итерацией (5 раз) клип становится всё быстрей и быстрей
 def pitchclip(clip, duration):
   random_timestamp = random.uniform(0, duration/2)
   clip = clip.subclip(random_timestamp, random_timestamp+(duration/6))
@@ -47,6 +50,8 @@ def pitchclip(clip, duration):
     array_pitch.append(clip_part)
   pitch_final = concatenate_videoclips(array_pitch)
   return pitch_final
+
+# Суп рандом - случайная скорость с каждой итерацией (10 раз)
 def soup_random(clip, duration):
     array_pitch = []
     for x in range(10):
@@ -58,6 +63,7 @@ def soup_random(clip, duration):
         array_pitch.append(clip_part)
     pitch_final = concatenate_videoclips(array_pitch)
     return pitch_final
+
 support_suffixes = [".mp4",".avi",".3gp",".mov"]
 sources_dirty = os.listdir(path="media")
 sources = []
@@ -73,8 +79,7 @@ for x in range(clips_range):
     try:
         rand_clip = random.choice(sources)
         clip_for_rytp = VideoFileClip(f"media/{rand_clip}")
-        clip_duration = clip_for_rytp.duration
-        random_clip_of_clip = random.randint(0, abs(int(clip_duration-maximum)))
+        random_clip_of_clip = random.randint(0, abs(int(clip_for_rytp.duration-maximum)))
         clip_for_rytp = clip_for_rytp.subclip(random_clip_of_clip, random_clip_of_clip+random.uniform(minimum, maximum))
     except OSError:
         print("Найден нечитаемый сурс:", rand_clip)
@@ -82,14 +87,14 @@ for x in range(clips_range):
     # тут добавляются эффекты
     for i in range(random.randint(1,3)):
       try:
-          rand_second_clip = random.choice(sources)
-          second_clip = VideoFileClip(f"media/{rand_second_clip}")
-          second_clip_duration = second_clip.duration
-          random_clip_of_second_clip = random.randint(0, abs(second_clip_duration-maximum)) # эта хуёвина выдавала постоянно empty randrange, поэтому я прибавил 3 к этой хуйне (я сам не понимаю, что тут происходит)
-          second_clip = second_clip.subclip(random_clip_of_second_clip, random_clip_of_second_clip+random.uniform(minimum,maximum))
           effect = random.choice(effects)
+          if effect=='.set_audio(second_clip.audio)':
+              rand_second_clip = random.choice(sources)
+              second_clip = VideoFileClip(f"media/{rand_second_clip}")
+              random_clip_of_second_clip = random.randint(0, abs(second_clip.duration-maximum)) # эта хуёвина выдавала постоянно empty randrange, поэтому я прибавил 3 к этой хуйне (я сам не понимаю, что тут происходит)
+              second_clip = second_clip.subclip(random_clip_of_second_clip, random_clip_of_second_clip+random.uniform(minimum,maximum))
+        
           clip_rytp = eval(f'clip_for_rytp{effect}')
-          
           choice = random.choice(percentage_array)
           try:
             if choice == "РАНДОМ": clip_rytp = soup_random(clip_rytp, clip_rytp.duration)
@@ -109,9 +114,11 @@ print("Видео готово, остался рендер")
 rytp_final = concatenate_videoclips(all_clips)
 resolutions = [(320, 240), (640, 360), (1280, 720), (1024, 768)]
 resolutions_img = ["320x240 - 240p", "640x360 - 360p", "1280x720 - 720p", "1024x768 - 4:3 разрешение"]
+
 print("Выберите разрешение, в котором вы будете рендерить видео")
 for i in range(len(resolutions_img)):
     print(f'{i}. {resolutions_img[i]}')
+
 res = int(input("-> "))
 rytp = rytp_final.resize(resolutions[res])
 input_fps = int(input("Введите кол-во фпс, в котором вы будете рендерить видео: "))
