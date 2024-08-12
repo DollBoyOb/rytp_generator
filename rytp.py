@@ -6,8 +6,7 @@ import moviepy
 import inspect
 
 module_path = inspect.getfile(moviepy)
-path_file_needed = os.path.dirname(module_path)
-path_file_needed+=r"\video\fx\resize.py"
+path_file_needed = os.path.dirname(module_path)+r"\video\fx\resize.py"
 
 with open(path_file_needed, 'r') as f:
     file_to_update = f.read()
