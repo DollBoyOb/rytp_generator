@@ -115,8 +115,7 @@ resolutions = [(320, 240), (640, 360), (1280, 720), (1024, 768)]
 resolutions_img = ["320x240 - 240p", "640x360 - 360p", "1280x720 - 720p", "1024x768 - 4:3 разрешение"]
 
 print("Выберите разрешение, в котором вы будете рендерить видео")
-for i in range(len(resolutions_img)):
-    print(f'{i}. {resolutions_img[i]}')
+print('\n'.join([f'{i}. {resolutions_img[i]}' for i in range(len(resolutions_img))]))
 
 res = int(input("-> "))
 rytp = rytp_final.resize(resolutions[res])
