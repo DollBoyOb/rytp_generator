@@ -78,7 +78,7 @@ for x in range(clips_range):
     try:
         rand_clip = random.choice(sources)
         clip_for_rytp = VideoFileClip(f"media/{rand_clip}")
-        random_clip_of_clip = random.randint(0, abs(int(clip_for_rytp.duration-maximum)))
+        random_clip_of_clip = random.uniform(0, abs(int((clip_for_rytp.duration)-maximum)))
         clip_for_rytp = clip_for_rytp.subclip(random_clip_of_clip, random_clip_of_clip+random.uniform(minimum, maximum))
     except OSError:
         print("Найден нечитаемый сурс:", rand_clip)
@@ -90,7 +90,7 @@ for x in range(clips_range):
           if effect=='.set_audio(second_clip.audio)':
               rand_second_clip = random.choice(sources)
               second_clip = VideoFileClip(f"media/{rand_second_clip}")
-              random_clip_of_second_clip = random.randint(0, abs(second_clip.duration-maximum)) # эта хуёвина выдавала постоянно empty randrange, поэтому я прибавил 3 к этой хуйне (я сам не понимаю, что тут происходит)
+              random_clip_of_second_clip = random.uniform(0, abs((second_clip.duration)-maximum)) # эта хуёвина выдавала постоянно empty randrange, поэтому я прибавил 3 к этой хуйне (я сам не понимаю, что тут происходит)
               second_clip = second_clip.subclip(random_clip_of_second_clip, random_clip_of_second_clip+random.uniform(minimum,maximum))
         
           clip_rytp = eval(f'clip_for_rytp{effect}')
