@@ -66,37 +66,25 @@ if len(sources)<=1:
 print("Идёт генерирование пупа... Это может занять более 10 минут")
 all_clips = [intro]
 for x in range(clips_range):
-    try:
-        rand_clip = random.choice(sources)
-        clip_for_rytp = VideoFileClip(f"media/{rand_clip}")
-        random_clip_of_clip = random.randint(0, abs(int((clip_for_rytp.duration)-maximum)))
-        clip_for_rytp = clip_for_rytp.subclip(random_clip_of_clip, random_clip_of_clip+random.uniform(minimum, maximum))
-    except OSError:
-        print("Найден нечитаемый сурс:", rand_clip)
-        sources.remove(rand_clip)
-    # тут добавляются эффекты
-    for i in range(random.randint(1,3)):
-      try:
-          effect = random.choice(effects)
-          if effect=='.set_audio(second_clip.audio)':
-              rand_second_clip = random.choice(sources)
-              second_clip = VideoFileClip(f"media/{rand_second_clip}")
-              random_clip_of_second_clip = random.randint(0, abs(int((second_clip.duration)-maximum))) # эта хуёвина выдавала постоянно empty randrange, поэтому я прибавил 3 к этой хуйне (я сам не понимаю, что тут происходит)
-              second_clip = second_clip.subclip(random_clip_of_second_clip, random_clip_of_second_clip+random.uniform(minimum,maximum))
-        
-          clip_rytp = eval(f'clip_for_rytp{effect}')
-          choice = random.choice(percentage_array)
-          try:
-            if choice == "РАНДОМ": clip_rytp = soup_random(clip_rytp, clip_rytp.duration)
-            if choice == "ПИТЧ": clip_rytp = pitchclip(clip_rytp, clip_rytp.duration)
-            if choice == "САС": clip_rytp = sas(clip_rytp)
-            if choice == "НИЧЕГО": pass
-          except:
-            pass
-      except OSError:
-          print("Найден нечитаемый сурс:", rand_second_clip)
-          sources.remove(rand_second_clip)
+    random_effects = [random.choice(effects) for i in range(random.randint(1,3))]
+
+    if '.set_audio(second_clip.audio)' in random_effects:
+        second_clip = VideoFileClip(f"media/{random.choice(sources)}")
+        crop = random.uniform(0, second_clip.duration-maximum)
+        second_clip = second_clip.subclip(crop, crop + random.uniform(minimum, maximum))
+
+    first_clip = VideoFileClip(f"media/{random.choice(sources)}")
+    crop = random.uniform(0, first_clip.duration-maximum)
+    clip_rytp = eval(f"first_clip.subclip(crop, crop + random.uniform(minimum, maximum)){''.join(random_effects)}")
+    print(clip_rytp.duration)
+    c = random.choice(percentage_array)
+    if c == "РАНДОМ": clip_rytp = soup_random(clip_rytp)
+    if c == "ПИТЧ":   clip_rytp = pitchclip(clip_rytp)
+    if c == "САС":    clip_rytp = sas(clip_rytp)
+
     all_clips.append(clip_rytp)
+    clip_rytp.close()
+
     percentage_rytp = int((len(all_clips)/(clips_range+1))*100)
     print(f"Выполнено {len(all_clips)}/{clips_range+1} - {percentage_rytp}%")
 
@@ -113,3 +101,4 @@ rytp = rytp_final.resize(resolutions[res])
 input_fps = int(input("Введите кол-во фпс, в котором вы будете рендерить видео: "))
 print("Идёт рендер пупа...")
 rytp.write_videofile('new_rytp.mp4', fps=input_fps)
+rytp.close()
