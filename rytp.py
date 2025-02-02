@@ -40,28 +40,19 @@ def sas(clip):
     return saas_clip
 
 # Питч эффект - с каждой итерацией (5 раз) клип становится всё быстрей и быстрей
-def pitchclip(clip, duration):
-  random_timestamp = random.uniform(0, duration/2)
-  clip = clip.subclip(random_timestamp, random_timestamp+(duration/6))
-  array_pitch = []
-  for i in range(5):
-    clip_part = clip.fx(vfx.speedx, 1+i/2)
-    array_pitch.append(clip_part)
-  pitch_final = concatenate_videoclips(array_pitch)
-  return pitch_final
+def pitchclip(clip):
+    random_timestamp = random.uniform(0, clip.duration-(clip.duration/5))
+    clip_n = clip.set_duration(clip.duration).subclip(random_timestamp, random_timestamp+(clip.duration/5))
+
+    return concatenate_videoclips([clip_n.fx(vfx.speedx, 1+i/2) for i in range(5)])
 
 # Суп рандом - случайная скорость с каждой итерацией (10 раз)
-def soup_random(clip, duration):
-    array_pitch = []
-    for x in range(10):
-        random_timestamp = random.uniform(duration/15, duration)
-        if duration<0.5: part_duration = duration/10
-        else: part_duration = 0.5
-        clip_p = clip.subclip(random_timestamp-part_duration-0.02, random_timestamp)
-        clip_part = clip_p.fx(vfx.speedx, 3.5+random.uniform(0.2, 2))
-        array_pitch.append(clip_part)
-    pitch_final = concatenate_videoclips(array_pitch)
-    return pitch_final
+def soup_random(clip):
+    random_timestamp = random.uniform(0, clip.duration-(clip.duration/5))
+    clip_n = clip.set_duration(clip.duration).subclip(random_timestamp, random_timestamp+(clip.duration/5))
+
+    return concatenate_videoclips([clip_n.fx(vfx.speedx, random.uniform(1, 10)) for i in range(10)])
+
 
 support_suffixes = [".mp4",".avi",".3gp",".mov"]
 sources_dirty = os.listdir(path="media")
