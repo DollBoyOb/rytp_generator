@@ -42,14 +42,14 @@ def sas(clip):
 # Питч эффект - с каждой итерацией (5 раз) клип становится всё быстрей и быстрей
 def pitchclip(clip):
     random_timestamp = random.uniform(0, clip.duration-(clip.duration/5))
-    clip_n = clip.set_duration(clip.duration).subclip(random_timestamp, random_timestamp+(clip.duration/5))
+    clip_n = clip.subclip(random_timestamp, random_timestamp+(clip.duration/5))
 
     return concatenate_videoclips([clip_n.fx(vfx.speedx, 1+i/2) for i in range(5)])
 
 # Суп рандом - случайная скорость с каждой итерацией (10 раз)
 def soup_random(clip):
     random_timestamp = random.uniform(0, clip.duration-(clip.duration/5))
-    clip_n = clip.set_duration(clip.duration).subclip(random_timestamp, random_timestamp+(clip.duration/5))
+    clip_n = clip.subclip(random_timestamp, random_timestamp+(clip.duration/5))
 
     return concatenate_videoclips([clip_n.fx(vfx.speedx, random.uniform(1, 10)) for i in range(10)])
 
@@ -74,9 +74,12 @@ for x in range(clips_range):
     clip_rytp = eval(f"first_clip.subclip(crop, crop + random.uniform(minimum, maximum)){''.join(random_effects)}")
     print(clip_rytp.duration)
     c = random.choice(percentage_array)
-    if c == "РАНДОМ": clip_rytp = soup_random(clip_rytp)
-    if c == "ПИТЧ":   clip_rytp = pitchclip(clip_rytp)
-    if c == "САС":    clip_rytp = sas(clip_rytp)
+    try:
+        if c == "РАНДОМ": clip_rytp = soup_random(clip_rytp)
+        if c == "ПИТЧ":   clip_rytp = pitchclip(clip_rytp)
+        if c == "САС":    clip_rytp = sas(clip_rytp)
+    except:
+        pass
 
     all_clips.append(clip_rytp)
     clip_rytp.close()
